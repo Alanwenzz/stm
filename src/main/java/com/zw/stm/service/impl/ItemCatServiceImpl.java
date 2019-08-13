@@ -1,6 +1,6 @@
 package com.zw.stm.service.impl;
 
-import com.zw.stm.common.EasyUITreeNode;
+import com.zw.stm.common.pojo.EasyUITreeNode;
 import com.zw.stm.mapper.TbItemCatMapper;
 import com.zw.stm.pojo.TbItemCatExample.Criteria;
 import com.zw.stm.pojo.TbItemCat;

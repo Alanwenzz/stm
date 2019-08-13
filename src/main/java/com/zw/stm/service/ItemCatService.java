@@ -1,6 +1,6 @@
 package com.zw.stm.service;
 
-import com.zw.stm.common.EasyUITreeNode;
+import com.zw.stm.common.pojo.EasyUITreeNode;
 
 import java.util.List;
 

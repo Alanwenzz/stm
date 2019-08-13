@@ -1,4 +1,4 @@
-package com.zw.stm.common;
+package com.zw.stm.common.pojo;
 
 import java.io.Serializable;
 /**

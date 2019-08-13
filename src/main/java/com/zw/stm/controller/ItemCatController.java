@@ -1,7 +1,6 @@
 package com.zw.stm.controller;
 
-import com.zw.stm.common.EasyUITreeNode;
-import com.zw.stm.pojo.TbItemCat;
+import com.zw.stm.common.pojo.EasyUITreeNode;
 import com.zw.stm.service.ItemCatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
