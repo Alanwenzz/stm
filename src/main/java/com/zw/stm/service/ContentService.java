@@ -8,5 +8,9 @@ import java.util.List;
 public interface ContentService {
     public List<TbContent> getContentListByCatId(Long id);
 
-    public TaotaoResult saveContent(TbContent tContent);
+    public TbContent saveContent(TbContent tContent);
+
+    void deleteContent(Long ids,Long categoryId);
+
+    TbContent getContentById(Long id);
 }

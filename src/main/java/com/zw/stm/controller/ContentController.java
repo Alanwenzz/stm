@@ -25,7 +25,8 @@ public class ContentController {
         //1.引入服务
         //2.注入服务
         //3.调用
-        return contentservcie.saveContent(tContent);
+        contentservcie.saveContent(tContent);
+        return TaotaoResult.ok();
     }
 
     @RequestMapping(value="/content/query/list",method=RequestMethod.GET)
@@ -35,5 +36,16 @@ public class ContentController {
         //2.注入服务
         //3.调用
         return contentservcie.getContentListByCatId(id);
+    }
+
+    @RequestMapping(value="/content/delete")
+    @ResponseBody
+    public TaotaoResult deleteContent(Long ids){
+        //1.引入服务
+        //2.注入服务
+        //3.调用
+        TbContent content=contentservcie.getContentById(ids);
+        contentservcie.deleteContent(ids,content.getCategoryId());
+        return TaotaoResult.ok();
     }
 }
