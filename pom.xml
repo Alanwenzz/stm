@@ -73,6 +73,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-solr</artifactId>
         </dependency>
+
+        <!-- activemq -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
+        </dependency>
+
+        <!--<dependency>-->
+            <!--<groupId>org.apache.activemq</groupId>-->
+            <!--<artifactId>activemq-pool</artifactId>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>

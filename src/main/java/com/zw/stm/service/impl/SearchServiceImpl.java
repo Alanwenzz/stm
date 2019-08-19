@@ -25,6 +25,7 @@ public class SearchServiceImpl implements SearchService {
     private SearchMapper mapper;
     @Autowired
     private SolrClient solrClient;
+
     @Override
     public TaotaoResult importAllSearchItems() throws Exception{
         List<SearchItem> list= mapper.getSearchItemList();
@@ -127,5 +128,29 @@ public class SearchServiceImpl implements SearchService {
         //5.设置SearchResult 的属性
         searchResult.setItemList(itemlist);
         return searchResult;
+    }
+
+    //更新索引库
+    public TaotaoResult updateSearchItemById(Long itemId) throws Exception{
+        //注入mapper
+        //查询到记录
+        SearchItem item = mapper.getSearchItemById(itemId);
+        //把记录更新到索引库
+        //创建solrserver 注入进来
+        //创建solrinputdocument对象
+        SolrInputDocument document = new SolrInputDocument();
+        //向文档对象中添加域
+        document.addField("id", item.getId().toString());//这里是字符串需要转换
+        document.addField("item_title", item.getTitle());
+        document.addField("item_sell_point", item.getSell_point());
+        document.addField("item_price", item.getPrice());
+        document.addField("item_image", item.getImage());
+        document.addField("item_category_name", item.getCategory_name());
+        document.addField("item_desc", item.getItem_desc());
+        //向索引库中添加文档
+        solrClient.add(document);
+        //提交
+        solrClient.commit();
+        return TaotaoResult.ok();
     }
 }

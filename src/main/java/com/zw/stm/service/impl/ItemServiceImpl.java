@@ -11,19 +11,26 @@ import com.zw.stm.pojo.TbItem;
 import com.zw.stm.pojo.TbItemDesc;
 import com.zw.stm.pojo.TbItemExample;
 import com.zw.stm.service.ItemService;
+import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.jms.Destination;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.Session;
 import java.util.Date;
 import java.util.List;
 
 @Service
 public class ItemServiceImpl implements ItemService {
-
     @Autowired
     private TbItemMapper tbItemMapper;
     @Autowired
     private TbItemDescMapper tbItemDescMapper;
+    @Autowired
+    private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Override
     public EasyUIDataGridResult getItemList(Integer page, Integer rows) {
@@ -65,6 +72,9 @@ public class ItemServiceImpl implements ItemService {
         //注入tbitemdesc的mapper
         tbItemDescMapper.insertSelective(desc2);
 
+        //添加发送业务的逻辑
+        Destination destination = new ActiveMQTopic("topicDestination");
+        jmsMessagingTemplate.convertAndSend(destination,itemId+"");
 
         //5.返回taotaoresult
         return TaotaoResult.ok();

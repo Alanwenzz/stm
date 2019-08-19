@@ -11,4 +11,6 @@ public interface SearchService {
     SearchResult searchSet(String queryString, Integer page, Integer rows) throws Exception;
     //搜索 从solr中搜索
     SearchResult search(SolrQuery query) throws Exception;
+    //根据id查询item
+    TaotaoResult updateSearchItemById(Long itemId) throws Exception;
 }

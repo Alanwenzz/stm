@@ -13,8 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class SearchController {
     @Value("${ITEM_ROWS}")
     private Integer ITEM_ROWS;
+    private final SearchService searchService;
+
     @Autowired
-    private SearchService searchService;
+    public SearchController(SearchService searchService) {
+        this.searchService = searchService;
+    }
 
     @RequestMapping("/solr/search")
     public String search(@RequestParam(defaultValue = "1") Integer page,@RequestParam(value = "q")String queryString, Model model) throws Exception{
