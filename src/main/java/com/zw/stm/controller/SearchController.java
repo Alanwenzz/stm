@@ -24,7 +24,7 @@ public class SearchController {
     public String search(@RequestParam(defaultValue = "1") Integer page,@RequestParam(value = "q")String queryString, Model model) throws Exception{
 
         SearchResult result=searchService.searchSet(queryString,page,ITEM_ROWS);
-        //4.设置数据传递到jsp中
+        //设置数据传递到页面中
         model.addAttribute("query", queryString);
         model.addAttribute("totalPages", result.getPageCount());//总页数
         model.addAttribute("itemList", result.getItemList());

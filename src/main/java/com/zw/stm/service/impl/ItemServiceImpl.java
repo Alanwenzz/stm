@@ -13,6 +13,9 @@ import com.zw.stm.pojo.TbItemExample;
 import com.zw.stm.service.ItemService;
 import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +28,16 @@ import java.util.List;
 
 @Service
 public class ItemServiceImpl implements ItemService {
+    private final TbItemMapper tbItemMapper;
+    private final TbItemDescMapper tbItemDescMapper;
+    private final JmsMessagingTemplate jmsMessagingTemplate;
+
     @Autowired
-    private TbItemMapper tbItemMapper;
-    @Autowired
-    private TbItemDescMapper tbItemDescMapper;
-    @Autowired
-    private JmsMessagingTemplate jmsMessagingTemplate;
+    public ItemServiceImpl(TbItemMapper tbItemMapper, TbItemDescMapper tbItemDescMapper, JmsMessagingTemplate jmsMessagingTemplate) {
+        this.tbItemMapper = tbItemMapper;
+        this.tbItemDescMapper = tbItemDescMapper;
+        this.jmsMessagingTemplate = jmsMessagingTemplate;
+    }
 
     @Override
     public EasyUIDataGridResult getItemList(Integer page, Integer rows) {
@@ -51,6 +58,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Caching(evict={@CacheEvict(value="itemInfoBase",key = "#item.id",condition="#item.id>0"),
+            @CacheEvict(value="itemInfoDesc",key = "#item.id",condition="#item.id>0")})
     public TaotaoResult saveItem(TbItem item, String desc) {
         //生成商品的id
         final long itemId = IDUtils.genItemId();
@@ -79,4 +88,17 @@ public class ItemServiceImpl implements ItemService {
         //5.返回taotaoresult
         return TaotaoResult.ok();
     }
+
+    @Override
+    @Cacheable(value="itemInfoBase",key = "#itemId",condition="#itemId>0")
+    public TbItem getItemById(Long itemId) {
+        return tbItemMapper.selectByPrimaryKey(itemId);
+    }
+
+    @Override
+    @Cacheable(value="itemInfoDesc",key = "#itemId",condition="#itemId>0")
+    public TbItemDesc getItemDescById(Long itemId) {
+        return tbItemDescMapper.selectByPrimaryKey(itemId);
+    }
+
 }
