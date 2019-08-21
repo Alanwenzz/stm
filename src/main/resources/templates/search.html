@@ -36,7 +36,6 @@
 	</div>
 	<div class="m psearch " id="plist">
 		<ul class="list-h clearfix" tpl="2">
-			<!--/*@thymesVar id="itemList" type=""*/-->
 			<li class="item-book" bookid="11078102" th:each="item,iterStat : ${itemList}">
 				<div class="p-img">
 					<a target="_blank" th:href="'http://localhost:8080/item/'+${item.id }">

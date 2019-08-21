@@ -55,6 +55,7 @@ public class PicUploadController {
         String originalFilename = Objects.requireNonNull(uploadFile.getOriginalFilename()).
                 substring(uploadFile.getOriginalFilename().
                         lastIndexOf(".") + 1);
+        //上传文件和缩略图
         StorePath storePath = this.storageClient.uploadImageAndCrtThumbImage(
                 uploadFile.getInputStream(),
                 uploadFile.getSize(),originalFilename , null);

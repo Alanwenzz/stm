@@ -74,4 +74,9 @@ public class PageController {
         return page;
     }
 
+    @RequestMapping("/page/{page}")
+    public String showPage(@PathVariable("page")String page){
+        return page;
+    }
+
 }
