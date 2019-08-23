@@ -78,4 +78,11 @@ public class UserLoginServiceImpl implements UserLoginService {
         //4.如果查询不到 返回400
         return TaotaoResult.build(400, "用户已过期");
     }
+
+    @Override
+    public void loginOut(String token) {
+        if(token!=null){
+            stringRedisTemplate.delete(token);
+        }
+    }
 }

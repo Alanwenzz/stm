@@ -4,9 +4,13 @@
     <meta http-equiv="pragma" content="no-cache">
     <meta http-equiv="Cache-Control" content="no-cache,must-revalidate">
     <title>注册-个人用户</title>
+    <!-- sweetalert2 -->
+    <link rel="stylesheet" th:href="@{/css/sweetalert2.min.css}" />
     <link type="text/css" rel="stylesheet" th:href="@{/css/regist.personal.css}"/>
     <link type="text/css" rel="stylesheet" th:href="@{/css/passport.base.css}"/>
     <script type="text/javascript" th:src="@{/js/jquery-1.6.4.js}"></script>
+    <!-- sweetalert2 -->
+    <script type="text/javascript" th:src="@{/js/sweetalert2.min.js}"></script>
 </head>
 <body>
 <div class="w" id="logo">
@@ -173,10 +177,24 @@
 			//$("#personRegForm").serialize()
 			$.post("/user/register",$("#personRegForm").serialize(), function(data){
 				if(data.status == 200){
-					alert('用户注册成功，请登录！');
-					REGISTER.login();//跳转到登录的页面
+                    swal({
+                        title: '注册成功',
+                        text: "",
+                        confirmButtonText: '确认',
+                        confirmButtonColor: '#4cd964',
+                    }).then(function(isConfirm) {
+                        if(isConfirm){
+                            REGISTER.login();//跳转到登录的页面
+                        }
+                    })
+
 				} else {
-					alert("注册失败！");
+                    swal({
+                        text: "注册失败！",
+                        type: "error",
+                        confirmButtonText: '确认',
+                        confirmButtonColor: '#f27474',
+                    })
 				}
 			});
 		},

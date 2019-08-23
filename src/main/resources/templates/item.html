@@ -6,7 +6,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<link rel="stylesheet" type="text/css" th:href="@{/css/taotao.css}" media="all" />
 	<link rel="stylesheet" type="text/css" th:href="@{/css/pshow.css}" media="all" />
-	<script type="text/javascript">
+	<script type="text/javascript" th:inline="javascript">
     	window.pageConfig = {
 			compatible: true,
        		product: {
@@ -33,7 +33,7 @@
 	
 	function addCartItem(){
 		var num=$("#buy-num").val();
-		window.location.href="http://localhost:8080/cart/add/${item.id}.html?num="+num;
+		window.location.href="http://localhost:8080/cart/add/"+JSON.parse([[${item.id}]])+"?num="+num;
 	}
 	</script>
 </head>
@@ -252,7 +252,7 @@
 <script type="text/javascript" th:src="@{/js/lib-v1.js}"></script>
 <script type="text/javascript" th:src="@{/js/product.js}"></script>
 <script type="text/javascript" th:src="@{/js/iplocation_server.}"></script>
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
 	var itemControl = {
 			param:{
 				descUrl:"/item/desc/",
@@ -282,7 +282,7 @@
 	};
 	$(function(){
 		//取商品id
-		var itemId = "${item.id}";
+		var itemId = JSON.parse([[${item.id}]]);
 		//给商品规格参数tab页绑定事件
 		$("#p-con-attr").bind("click", function(){
 			

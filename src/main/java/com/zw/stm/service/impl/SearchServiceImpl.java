@@ -21,10 +21,14 @@ import java.util.Map;
 
 @Service
 public class SearchServiceImpl implements SearchService {
+    private final SearchMapper mapper;
+    private final SolrClient solrClient;
+
     @Autowired
-    private SearchMapper mapper;
-    @Autowired
-    private SolrClient solrClient;
+    public SearchServiceImpl(SearchMapper mapper, SolrClient solrClient) {
+        this.mapper = mapper;
+        this.solrClient = solrClient;
+    }
 
     @Override
     public TaotaoResult importAllSearchItems() throws Exception{
