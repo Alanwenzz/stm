@@ -14,35 +14,23 @@
 </style>
 </head>
 <body class="easyui-layout">
+    <div region="north" split="true" border="false" style="background: #E0ECFF">
+        <span style="float:right; padding-right:20px;" class="head">欢迎 <span id="username"></span><a href="#" id="loginOut">安全退出</a></span>
+    </div>
     <div data-options="region:'west',title:'菜单',split:true" style="width:180px;">
-    	<ul id="menu" class="easyui-tree" style="margin-top: 10px;margin-left: 5px;">
-         	<li>
-         		<span>商品管理</span>
+    	<ul id="menu" class="easyui-tree" style="margin-top: 10px;margin-left: 5px;" >
+         	<li th:each="m,iterStat : ${menu}">
+         		<span th:text="${m.menuname}"></span>
          		<ul>
-	         		<li data-options="attributes:{'url':'item-add'}">新增商品</li>
-	         		<li data-options="attributes:{'url':'item-list'}">查询商品</li>
-	         		<li data-options="attributes:{'url':'item-param-list'}">规格参数</li>
+	         		<li th:each="m1,iter1:${m.menus}" th:text="${m1.menuname}" th:data-options="|attributes:{'url':'${m1.url}'}|">新增商品</li>
 	         	</ul>
          	</li>
-         	<li>
-         		<span>网站内容管理</span>
-         		<ul>
-	         		<li data-options="attributes:{'url':'content-category'}">内容分类管理</li>
-	         		<li data-options="attributes:{'url':'content'}">内容管理</li>
-	         	</ul>
-         	</li>
-			<li>
-				<span>网站索引管理</span>
-				<ul>
-					<li data-options="attributes:{'url':'indexManager'}">一键导入索引库</li>
-				</ul>
-			</li>
          </ul>
     </div>
     <div data-options="region:'center',title:''">
     	<div id="tabs" class="easyui-tabs">
 		    <div title="首页" style="padding:20px;">
-		        	
+
 		    </div>
 		</div>
     </div>
@@ -68,6 +56,41 @@
                             bodyCls:"content"
                         });
                     }
+                }
+            }
+        });
+    });
+
+    /**
+     * 显示登陆用户名
+     */
+    $(function() {
+        $.ajax({
+            url: '/login_showName',
+            dataType: 'json',
+            type: 'post',
+            success: function (rtn) {
+                //判断是否存在登陆用户
+                //访问json的key值方式有两种.
+                //对象.
+                //对象[key]
+                //JSON 对象 {"success":true,"message":'超级管理员'}
+                if (rtn.success) {
+                    $('#username').html(rtn['message']);
+                } else {
+                    location.href = "/admin/login";
+                }
+            }
+        });
+    })
+
+    //退出
+    $('#loginOut').bind('click',function(){
+        $.ajax({
+            url: '/admin/logout',
+            success:function(rtn){
+                if(rtn*0==0){
+                    location.href="/admin/login";
                 }
             }
         });

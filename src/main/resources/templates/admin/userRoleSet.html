@@ -1,0 +1,61 @@
+<div class="easyui-layout" style="height: 350px">
+	<div data-options="region:'west',title:'用户列表'" style="padding:4px;width:440px;">
+		<table id="grid"></table>
+	</div>
+	<div data-options="region:'center',title:'角色设置'" style="padding:4px">
+		<ul id="tree"></ul>
+		<button id="btnSave">保存</button>
+	</div>
+</div>
+<script type="text/javascript" th:inline="none">
+$(function(){
+	$('#tree').tree({
+		animate:true,
+		checkbox:true
+	});
+
+	$('#grid').datagrid({
+		url: '/user/getListByPage',
+		columns:[[
+			{field:'id',title:'编号',width:131},
+			{field:'username',title:'名称',width:131}
+		]],
+		pagination:true,
+		singleSelect:true,
+		onClickRow:function(rowIndex, rowData){
+			$('#tree').tree({
+				url: '/user/readEmpRoles?id=' + rowData.id,
+				animate:true,
+				checkbox:true
+			});
+		}
+	});
+	
+	$('#btnSave').bind('click',function(){
+		var nodes = $('#tree').tree('getChecked');
+		var ids = new Array();
+		$.each(nodes,function(i, node){
+			ids.push(node.id);
+		});
+		//[1,2,3,4] => "1,2,3,4"
+		var checkedStr = ids.join(',');//把数组里的每个元素都拼接上逗号
+		//构建提交数据
+		var formdata = {};
+		//id赋值
+		formdata.id= $('#grid').datagrid('getSelected').id;
+		//选中的角色ID
+		formdata.checkedStr=checkedStr;
+		$.ajax({
+			url: '/user/updateEmpRoles',
+			data:formdata,
+			type:'post',
+			dataType: 'json',
+			success:function(rtn){
+				if(rtn==1){
+					$.messager.alert('提示',"保存成功",'info');
+				}else $.messager.alert('提示',"保存失败",'info');
+			}
+		});
+	});
+});
+</script>

@@ -2,8 +2,11 @@ package com.zw.stm.controller;
 
 import com.zw.stm.common.pojo.Ad1Node;
 import com.zw.stm.common.util.JsonUtils;
+import com.zw.stm.pojo.Menu;
 import com.zw.stm.pojo.TbContent;
+import com.zw.stm.pojo.TbUser;
 import com.zw.stm.service.ContentService;
+import com.zw.stm.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -11,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +35,13 @@ public class PageController {
     private String AD1_WIDTH_B;
 
     private final ContentService contentService;
-
+    private final UserService userService;
+    private final HttpSession session;
     @Autowired
-    public PageController(ContentService contentService) {
+    public PageController(ContentService contentService, UserService userService, HttpSession session) {
         this.contentService = contentService;
+        this.userService = userService;
+        this.session = session;
     }
 
     //前台主页面
@@ -60,7 +67,13 @@ public class PageController {
 
     //后台主页面
     @RequestMapping("index")
-    public String admin(){
+    public String admin(Model model){
+        //菜单
+        //从0读取整个表
+        TbUser user= (TbUser) session.getAttribute("userinfo");
+        Menu menu = userService.readMenusByEmpuuid(user.getId());
+        List<Menu> m=menu.getMenus();
+        model.addAttribute("menu",m);
         return "index";
     }
 
@@ -77,6 +90,16 @@ public class PageController {
     @RequestMapping("/page/{page}")
     public String showPage(@PathVariable("page")String page){
         return page;
+    }
+
+    @RequestMapping("/admin/{page}")
+    public String adminPage(@PathVariable("page")String page){
+        return "/admin/"+page;
+    }
+
+    @RequestMapping("/admin/login")
+    public String admin_login(){
+        return "admin/login";
     }
 
 }

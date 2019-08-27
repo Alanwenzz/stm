@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Head -->
+<head>
+    <title>淘淘后台登录</title>
+    <!-- Meta-Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="keywords" content="Existing Login Form Widget Responsive, Login Form Web Template, Flat Pricing Tables, Flat Drop-Downs, Sign-Up Web Templates, Flat Web Templates, Login Sign-up Responsive Web Template, Smartphone Compatible Web Template, Free Web Designs for Nokia, Samsung, LG, Sony Ericsson, Motorola Web Design">
+    <link th:href="@{/css/popuo-box.css}" rel="stylesheet" type="text/css" media="all" />
+	
+    <!-- Style -->
+    <link rel="stylesheet" th:href="@{/css/style.css}" type="text/css" media="all">
+    <!-- sweetalert2 -->
+    <link rel="stylesheet" th:href="@{/css/sweetalert2.min.css}" />
+
+    <script type="text/javascript" th:src="@{/js/jquery-1.6.4.js}"></script>
+    <!-- sweetalert2 -->
+    <script type="text/javascript" th:src="@{/js/sweetalert2.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.serializejson.min.js}"></script>
+	<script type="text/javascript">
+		/**
+		 * 登陆
+		 */
+		function login(){
+			var formdata = $('#loginform').serializeJSON();
+			//提交登陆验证
+			$.ajax({
+				url: '/user/login',
+				data:formdata,
+				dataType: 'json',
+				type: 'post',
+				success:function(data){
+					//登陆成功
+                    if (data.status == 200) {
+                        location.href = "http://localhost:8080/index";
+                    }else {
+                        swal({
+                            title: '登录失败',
+                            text: "用户名或密码错误！",
+                            type: "error",
+                            confirmButtonText: '确认',
+                            confirmButtonColor: '#f27474',
+                        })
+                    }
+				}
+			});
+		}
+	</script>
+</head>
+<!-- //Head -->
+<!-- Body -->
+<body>
+
+    <h1>淘淘后台登录</h1>
+
+    <div class="w3layoutscontaineragileits">
+        <h2>在这里登录</h2>
+        <form id="loginform" method="post">
+            <input type="text" name="username" placeholder="USERNAME" required>
+            <input type="password" name="password" placeholder="PASSWORD" required>
+            <ul class="agileinfotickwthree">
+                <li>
+                    <input type="checkbox" id="brand1" value="">
+                </li>
+            </ul>
+            <div class="aitssendbuttonw3ls">
+                <input type="button" onclick="login()" class="btn btn-success" value="登录">
+                <div class="clear"></div>
+            </div>
+        </form>
+    </div>
+
+    <!-- pop-up-box-js-file -->
+    <script th:src="@{/js/jquery.magnific-popup.js}" type="text/javascript"></script>
+    <!--//pop-up-box-js-file -->
+    <script>
+        $(document).ready(function () {
+            $('.w3_play_icon,.w3_play_icon1,.w3_play_icon2').magnificPopup({
+                type: 'inline',
+                fixedContentPos: false,
+                fixedBgPos: true,
+                overflowY: 'auto',
+                closeBtnInside: true,
+                preloader: false,
+                midClick: true,
+                removalDelay: 300,
+                mainClass: 'my-mfp-zoom-in'
+            });
+
+        });
+    </script>
+
+</body>
+ 
+</html>
